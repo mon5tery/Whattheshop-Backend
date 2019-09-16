@@ -15,3 +15,11 @@ class ItemDetailAPIView(RetrieveAPIView):
 	serializer_class = ItemDetailSerializer
 	lookup_field = 'id'
 	lookup_url_kwarg = 'item_id'
+
+class ItemView(ModelViewSet):
+   queryset = Item.objects.all()
+   def get_serializer_class(self):
+       if self.action == 'list':
+           return ItemList
+       else:
+           return ItemDetail
