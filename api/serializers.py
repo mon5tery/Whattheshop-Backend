@@ -51,3 +51,5 @@ class ItemUpdateSerializer(serializers.ModelSerializer):
 			'image',
 			'category',
         ]
+
+        # // salam
