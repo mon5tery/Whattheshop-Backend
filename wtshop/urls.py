@@ -8,12 +8,13 @@ from api import views
 router = SimpleRouter()
 router.register("item", views.ItemView)
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+    path('', include('api.urls')),
 
     path('', include(router.urls)),
-
+    path('cartItems/', views.InventoryView.as_view()),
 
 ]
 
