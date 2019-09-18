@@ -1,25 +1,21 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
-from .serializers import UserCreateSerializer
-from rest_framework.views import APIView
 
-from .models import Item
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView
+from .serializers import *
+from rest_framework.viewsets import ModelViewSet
+from .models import Item, CartItem, Checkout
+
+class ItemView(ModelViewSet):
+    queryset = Item.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ItemListSeralizer
+        else:
+            return ItemDetailSeralizer
 
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
 
-class UserLoginView(APIView):
-	serializer_class = UserLoginSerializer
-
-class ItemDetailAPIView(RetrieveAPIView):
-	queryset = Item.objects.all()
-	serializer_class = ItemDetailSerializer
-	lookup_field = 'id'
-	lookup_url_kwarg = 'item_id'
-
-class ItemView(ModelViewSet):
-   queryset = Item.objects.all()
-   def get_serializer_class(self):
-       if self.action == 'list':
-           return ItemList
-       else:
-           return ItemDetail
+class InventoryView(ListAPIView):
+    queryset = CartItem.objects.all()
+    serializer_class = CartDetailSeralizer
