@@ -1,3 +1,4 @@
+
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView
 from .serializers import *
 from rest_framework.viewsets import ModelViewSet
@@ -12,10 +13,8 @@ class ItemView(ModelViewSet):
         else:
             return ItemDetailSeralizer
 
-
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
-
 
 class InventoryView(ListAPIView):
     queryset = CartItem.objects.all()
