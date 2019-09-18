@@ -14,7 +14,7 @@ urlpatterns = [
     path('', include('api.urls')),
 
     path('', include(router.urls)),
-    path('cartItems/', views.InventoryView.as_view()),
+    path('cartitems/', views.CartItemView.as_view()),
 
 ]
 

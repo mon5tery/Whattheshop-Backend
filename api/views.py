@@ -2,7 +2,7 @@
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView
 from .serializers import *
 from rest_framework.viewsets import ModelViewSet
-from .models import Item, CartItem, Checkout
+from .models import Item, CartItem, Order
 
 class ItemView(ModelViewSet):
     queryset = Item.objects.all()
@@ -16,6 +16,6 @@ class ItemView(ModelViewSet):
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
 
-class InventoryView(ListAPIView):
+class CartItemView(ListAPIView):
     queryset = CartItem.objects.all()
     serializer_class = CartDetailSeralizer

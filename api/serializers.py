@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Item, CartItem, Checkout
+from .models import Item, CartItem, Order
 
 
 
@@ -32,12 +32,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class ItemListSeralizer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ["name", "price", "image"]
+        fields = ["id","name", "price", "image"]
 
 class ItemDetailSeralizer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ["name", "price", "image", "description"]
+        fields = ["id", "name", "price", "image", "description"]
 
 class CartDetailSeralizer(serializers.ModelSerializer):
     total = serializers.SerializerMethodField()
@@ -49,7 +49,7 @@ class CartDetailSeralizer(serializers.ModelSerializer):
         return obj.quantity * obj.item.price
 
 
-class CheckOutSeralizer(serializers.ModelSerializer):
+class OrderSeralizer(serializers.ModelSerializer):
     class Meta:
-        model = Checkout
+        model = Order
         fields = ["item", "checked_out"]
