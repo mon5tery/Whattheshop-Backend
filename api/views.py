@@ -16,6 +16,7 @@ class ItemView(ModelViewSet):
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserCreateSerializer
 
-class CartItemView(ListAPIView):
-    queryset = CartItem.objects.all()
-    serializer_class = CartDetailSeralizer
+
+class CartItemCreateAPIView(CreateAPIView):
+    serializer_class = CartItemSeralizer
+

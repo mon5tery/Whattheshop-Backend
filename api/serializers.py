@@ -53,3 +53,8 @@ class OrderSeralizer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ["item", "checked_out"]
+
+class CartItemSeralizer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ["item", "cart", "quantity"]
