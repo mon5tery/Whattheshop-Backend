@@ -15,9 +15,8 @@ urlpatterns = [
 
     path('', include(router.urls)),
     path('cart/', views.CartItemCreateAPIView.as_view()),
-
+    path('order/', views.FetchOrderViewSet.as_view()),
 ]
-
 
 
 if settings.DEBUG:

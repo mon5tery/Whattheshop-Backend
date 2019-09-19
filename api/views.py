@@ -20,3 +20,12 @@ class UserCreateAPIView(CreateAPIView):
 class CartItemCreateAPIView(CreateAPIView):
     serializer_class = CartItemSeralizer
 
+
+
+class FetchOrderViewSet(ListAPIView):
+    queryset = Order.objects.exclude(status='C')
+    serializer_class = OrderSeralizer
+
+
+  
+        
