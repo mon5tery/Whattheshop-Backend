@@ -4,57 +4,90 @@ from rest_framework import serializers
 from .models import Item, CartItem, Order
 
 
-
-
 class UserCreateSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-    class Meta:
-        model = User
-        fields = ['username', 'password']
+	password = serializers.CharField(write_only=True)
 
-    def create(self, validated_data):
-        username = validated_data['username']
-        password = validated_data['password']
-        new_user = User(username=username)
-        new_user.set_password(password)
-        new_user.save()
+	class Meta:
+		model = User
+		fields = ["username", "password", 'first_name', 'last_name']
 
-        # jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+	def create(self, validated_data):
+		username = validated_data["username"]
+		password = validated_data["password"]
+		first_name = validated_data['first_name']
+		last_name = validated_data['last_name']
+		new_user = User(username=username)
+		new_user.set_password(password)
+		new_user.save()
+
+		# jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 		# jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-        #
+		#
 		# payload = jwt_payload_handler(new_user)
 		# token = jwt_encode_handler(payload)
-        #
+		#
 		# validated_data["token"] = token
-        return validated_data
+		return validated_data
 
+class ProfileSerializer(serializers.ModelSerializer):
+	order_history = serializers.SerializerMethodField()
+	class Meta:
+		model = User
+		fields = ["username", "order_history"]
+	
+	def get_order_history(self, obj ):
+		orders = Order.objects.filter(user=obj)
+		return OrderSeralizer(orders, many=True).data
 
-class ItemListSeralizer(serializers.ModelSerializer):
-    class Meta:
-        model = Item
-        fields = ["id","name", "price", "image"]
-
-class ItemDetailSeralizer(serializers.ModelSerializer):
-    class Meta:
-        model = Item
-        fields = ["id", "name", "price", "image", "description"]
+class ItemSeralizer(serializers.ModelSerializer):
+	class Meta:
+		model = Item
+		fields = ["id", "name", "price", "image", "description"]
 
 class CartDetailSeralizer(serializers.ModelSerializer):
-    total = serializers.SerializerMethodField()
-    class Meta:
-        model = CartItem
-        fields = ["item", "cart", "quantity", "total"]
+	total = serializers.SerializerMethodField()
 
-    def get_total(self, obj):
-        return obj.quantity * obj.item.price
+	class Meta:
+		model = CartItem
+		fields = ["item", "cart", "quantity", "total"]
+
+	def get_total(self, obj):
+		return obj.quantity * obj.item.price
 
 
 class OrderSeralizer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ["item", "checked_out"]
+	class Meta:
+		model = Order
+		fields = ["status"]
+
 
 class CartItemSeralizer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ["item", "cart", "quantity"]
+	class Meta:
+		model = CartItem
+		fields = ["item"]
+
+class UpdateCartSeralizer(serializers.ModelSerializer):
+	class Meta:
+		model = CartItem
+		fields = ["quantity"]
+
+
+class ViewCartSeralizer(serializers.ModelSerializer):
+	class Meta:
+		model = CartItem
+		fields = ["cart"]
+
+class CartSerializer(serializers.ModelSerializer):
+	item = serializers.SerializerMethodField()
+
+	class Meta:
+		model = Order
+		fields = ["status", "item"]
+
+	def get_item(self, obj):
+		item = CartItem.objects.filter(cart=obj)
+		return CartItemSeralizer(item, many=True).data
+
+
+
+

@@ -13,12 +13,20 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('api.urls')),
 
+
     path('', include(router.urls)),
-    path('cart/', views.CartItemCreateAPIView.as_view()),
+    path('profile/', views.ProfileViewSet.as_view()),
     path('order/', views.FetchOrderViewSet.as_view()),
+    path('addtocart/', views.CartItemCreateAPIView.as_view()),
+    path('viewcart/', views.ViewCartViewSet.as_view()),
+    path('updatecart/<int:cart_id>/', views.UpdateCartViewSet.as_view()),
+    path('deletecart/<int:cart_id>/', views.CancelCartViewSet.as_view())
+    # path('checkout/', views.ViewCartViewSet.as_view()),
+
+    
 ]
 
 
 if settings.DEBUG:
-	urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-	urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
