@@ -3,12 +3,18 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 
 class Item(models.Model):
-
+    CATEGORY_CHOICES = (
+        ('$', '$'),
+        ('$$', '$$'),
+        ('$$$', '$$$'),
+        ('$$$$', '$$$$'),
+    )
     name = models.CharField(max_length=50)
     price = models.FloatField()
     description = models.TextField()
     image = models.ImageField()
-    category = models.CharField(max_length=15)
+    category = models.CharField(max_length= 4, choices=CATEGORY_CHOICES)
+    inventory= models.PositiveIntegerField()
 
 
     def __str__(self):
@@ -23,8 +29,8 @@ class Order(models.Model):
         ('X', 'Cancelled'),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    checked_out = models.DateTimeField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
+    
     def __str__(self):
         return str(self.id)
 
@@ -36,4 +42,6 @@ class CartItem(models.Model):
 
     def __str__(self):
         return str(str(self.id )+ " Cart ID: "+ str(self.cart.id) + " Item name: "+ self.item.name)
+
+
 

@@ -1,31 +1,58 @@
-
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from .serializers import *
 from rest_framework.viewsets import ModelViewSet
 from .models import Item, CartItem, Order
 
+
+
 class ItemView(ModelViewSet):
-    queryset = Item.objects.all()
+	queryset = Item.objects.all()
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ItemListSeralizer
-        else:
-            return ItemDetailSeralizer
-
+	def get_serializer_class(self):
+		if self.action == "list":
+			return ItemSeralizer
+	   
 class UserCreateAPIView(CreateAPIView):
-    serializer_class = UserCreateSerializer
+	serializer_class = UserCreateSerializer
 
 
 class CartItemCreateAPIView(CreateAPIView):
-    serializer_class = CartItemSeralizer
+	serializer_class = CartItemSeralizer
+	def perform_create(self, serializer):
+		order, created = Order.objects.get_or_create(status="C", user=user)
+		return order
 
+class ViewCartViewSet(RetrieveAPIView):
+	serializer_class = CartSerializer
+
+	def get_object(self):
+		user = self.request.user
+		order, created = Order.objects.get_or_create(status="C", user=user)
+		return order
 
 
 class FetchOrderViewSet(ListAPIView):
-    queryset = Order.objects.exclude(status='C')
-    serializer_class = OrderSeralizer
+	queryset = Order.objects.exclude(status="C")
+	serializer_class = OrderSeralizer
 
 
-  
-        
+class ProfileViewSet(RetrieveAPIView):
+	serializer_class = ProfileSerializer
+	def get_object(self):
+		return self.request.user
+
+class UpdateCartViewSet(RetrieveUpdateAPIView):
+	queryset = CartItem.objects.all()
+	serializer_class = UpdateCartSeralizer
+	lookup_field = "id"
+	lookup_url_kwarg = "cart_id"
+	
+class CancelCartViewSet(DestroyAPIView):
+	queryset = CartItem.objects.all()
+	lookup_field = 'id'
+	lookup_url_kwarg = 'cart_id'
+
+	
+
+	
+	
