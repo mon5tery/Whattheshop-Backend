@@ -64,7 +64,7 @@ class OrderSeralizer(serializers.ModelSerializer):
 class CartItemSeralizer(serializers.ModelSerializer):
 	class Meta:
 		model = CartItem
-		fields = ["item"]
+		fields = ["item", "quantity"]
 
 class UpdateCartSeralizer(serializers.ModelSerializer):
 	class Meta:
@@ -87,7 +87,6 @@ class CartSerializer(serializers.ModelSerializer):
 	def get_item(self, obj):
 		item = CartItem.objects.filter(cart=obj)
 		return CartItemSeralizer(item, many=True).data
-
 
 
 
