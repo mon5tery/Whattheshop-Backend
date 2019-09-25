@@ -20,8 +20,8 @@ urlpatterns = [
     path('addtocart/', views.CartItemCreateAPIView.as_view()),
     path('viewcart/', views.ViewCartViewSet.as_view()),
     path('updatecart/<int:cart_id>/', views.UpdateCartViewSet.as_view()),
-    path('deletecart/<int:cart_id>/', views.CancelCartViewSet.as_view())
-    # path('checkout/', views.ViewCartViewSet.as_view()),
+    path('deletecart/<int:cart_id>/', views.CancelCartViewSet.as_view()),
+    path('checkout/', views.Checkout.as_view()),
 
     
 ]

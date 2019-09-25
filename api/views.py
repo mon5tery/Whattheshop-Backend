@@ -1,6 +1,10 @@
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from .serializers import *
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
 from .models import Item, CartItem, Order
 
 
@@ -19,8 +23,8 @@ class UserCreateAPIView(CreateAPIView):
 class CartItemCreateAPIView(CreateAPIView):
 	serializer_class = CartItemSeralizer
 	def perform_create(self, serializer):
-		order, created = Order.objects.get_or_create(status="C", user=user)
-		return order
+		order, created = Order.objects.get_or_create(status="C", user=self.request.user)
+		serializer.save(cart=order)
 
 class ViewCartViewSet(RetrieveAPIView):
 	serializer_class = CartSerializer
@@ -51,6 +55,20 @@ class CancelCartViewSet(DestroyAPIView):
 	queryset = CartItem.objects.all()
 	lookup_field = 'id'
 	lookup_url_kwarg = 'cart_id'
+
+class Checkout(APIView):
+	
+
+	def get(self, request):
+		cart = Order.objects.get(status="C", user=self.request.user)
+		cart.status = "O"
+		cart.save()
+		return Response(CartSerializer(cart).data)
+	
+
+
+	
+		
 
 	
 
