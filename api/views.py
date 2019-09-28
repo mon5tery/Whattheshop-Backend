@@ -21,7 +21,7 @@ class UserCreateAPIView(CreateAPIView):
 
 
 class CartItemCreateAPIView(CreateAPIView):
-	serializer_class = CartItemSeralizer
+	serializer_class = AddtoCartSeralizer
 	def perform_create(self, serializer):
 		order, created = Order.objects.get_or_create(status="C", user=self.request.user)
 		serializer.save(cart=order)

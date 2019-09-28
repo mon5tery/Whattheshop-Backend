@@ -46,7 +46,6 @@ class ItemSeralizer(serializers.ModelSerializer):
 
 class CartDetailSeralizer(serializers.ModelSerializer):
 	total = serializers.SerializerMethodField()
-
 	class Meta:
 		model = CartItem
 		fields = ["item", "cart", "quantity", "total"]
@@ -61,10 +60,34 @@ class OrderSeralizer(serializers.ModelSerializer):
 		fields = ["status"]
 
 
+
+
+
+
+
+
+
+
+
+class NameImageSeralizer(serializers.ModelSerializer):
+	class Meta:
+		model = Item
+		fields = ["name", "image"]
+
 class CartItemSeralizer(serializers.ModelSerializer):
+	item = NameImageSeralizer()
+	class Meta:
+		model = CartItem
+		fields = ["item", "quantity",]
+
+class AddtoCartSeralizer(serializers.ModelSerializer):
 	class Meta:
 		model = CartItem
 		fields = ["item", "quantity"]
+
+
+
+
 
 class UpdateCartSeralizer(serializers.ModelSerializer):
 	class Meta:

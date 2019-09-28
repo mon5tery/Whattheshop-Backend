@@ -23,7 +23,6 @@ urlpatterns = [
     path('deletecart/<int:cart_id>/', views.CancelCartViewSet.as_view()),
     path('checkout/', views.Checkout.as_view()),
 
-    
 ]
 
 
