@@ -93,6 +93,45 @@ class ViewCartSeralizer(serializers.ModelSerializer):
         model = CartItem
         fields = ["id", "cart"]
 
+
+
+
+#for view cart
+
+class Cart__Serializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+    class Meta:
+        model = CartItem
+        fields = ["id", "quantity", "name", "image"]
+
+    def get_image(self, obj):
+        image = obj.item.image.url
+        return image
+    
+    def get_name(self, obj):
+        name = obj.item.name
+        return name
+        
+class Cart__2Serializer(serializers.ModelSerializer):
+    item = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Order
+        fields = ["item"]
+
+    def get_item(self, obj):
+        item = CartItem.objects.filter(cart=obj)
+        return  Cart__Serializer(item, many=True).data
+
+
+
+
+
+
+
+#for order history
+
 class CartSerializer(serializers.ModelSerializer):
     item = serializers.SerializerMethodField()
 
@@ -102,7 +141,7 @@ class CartSerializer(serializers.ModelSerializer):
 
     def get_item(self, obj):
         item = CartItem.objects.filter(cart=obj)
-        return CartItemSeralizer(item, many=True).data
+        return  CartItemSerializer(item, many=True).data
 
 
 
