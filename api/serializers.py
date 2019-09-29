@@ -101,9 +101,11 @@ class ViewCartSeralizer(serializers.ModelSerializer):
 class Cart__Serializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
+    price = serializers.SerializerMethodField()
+    total = serializers.SerializerMethodField()
     class Meta:
         model = CartItem
-        fields = ["id", "quantity", "name", "image"]
+        fields = ["id", "quantity", "name", "image", "price", "total"]
 
     def get_image(self, obj):
         image = obj.item.image.url
@@ -112,6 +114,14 @@ class Cart__Serializer(serializers.ModelSerializer):
     def get_name(self, obj):
         name = obj.item.name
         return name
+
+    def get_price(self, obj):
+        price = obj.item.price
+        return price
+
+    def get_total(self, obj):
+        return obj.quantity * obj.item.price
+
         
 class Cart__2Serializer(serializers.ModelSerializer):
     item = serializers.SerializerMethodField()
