@@ -16,7 +16,7 @@ urlpatterns = [
 
     path('', include(router.urls)),
     path('profile/', views.ProfileViewSet.as_view()),
-    path('order/', views.FetchOrderViewSet.as_view()),
+    path('orderhistory/', views.FetchOrderViewSet.as_view()),
     path('addtocart/', views.CartItemCreateAPIView.as_view()),
     path('viewcart/', views.ViewCartViewSet.as_view()),
     path('updatecart/<int:cart_id>/', views.UpdateCartViewSet.as_view()),

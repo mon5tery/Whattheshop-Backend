@@ -26,6 +26,7 @@ class CartItemCreateAPIView(CreateAPIView):
 		order, created = Order.objects.get_or_create(status="C", user=self.request.user)
 		serializer.save(cart=order)
 
+
 class ViewCartViewSet(RetrieveAPIView):
 	serializer_class = CartSerializer
 
@@ -58,7 +59,6 @@ class CancelCartViewSet(DestroyAPIView):
 
 class Checkout(APIView):
 	
-
 	def get(self, request):
 		cart = Order.objects.get(status="C", user=self.request.user)
 		cart.status = "O"
