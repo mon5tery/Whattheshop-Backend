@@ -28,7 +28,7 @@ class CartItemCreateAPIView(CreateAPIView):
 
 
 class ViewCartViewSet(RetrieveAPIView):
-	serializer_class = CartSerializer
+	serializer_class = Cart__2Serializer
 
 	def get_object(self):
 		user = self.request.user
